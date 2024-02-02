@@ -18,7 +18,7 @@
             <label>Please accept terms and agreement</label>
         </div>
 
-        <div class="">
+        <!-- <div class="">
             <input type="checkbox" value="mark" v-model="names" />
             <label>Mark</label>
         </div>
@@ -31,8 +31,19 @@
         <div class="terms">
             <input type="checkbox" value="abs" v-model="names" />
             <label>Abs</label>
+        </div> -->
+
+
+        <div>
+            <label>Skills</label>
+            <input type="text" v-model="tempSkill" @keyup.alt="addSkill"/>
         </div>
+
     </form>
+
+    <div v-for="sk in skill" :key="sk" >
+       <p @click="deleteSkill(sk)">{{ sk  }}</p>
+    </div>
 </template>
 
 <script>
@@ -44,11 +55,28 @@ export default {
             role: '',
             terms: false,
             names:[],
+            tempSkill: '',
+            skill: []
         }
     },
     watch: {
         names(newValue, oldValue) {
             console.log('Updated names:', newValue);
+        }
+    },
+    methods: {
+        addSkill(e) {
+            if(e.key === ',' && this.tempSkill) {
+                if(!this.skill.includes(this.tempSkill)) {
+                    this.skill.push(this.tempSkill)  
+                } 
+
+                this.tempSkill = ''
+
+            }
+        },
+        deleteSkill(s) {
+           this.skill = this.skill.filter((sk) => sk !== s)
         }
     }
 }
