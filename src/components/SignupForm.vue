@@ -1,10 +1,11 @@
 <template>
-    <form>
+    <form @submit.prevent="handleSubmit">
         <label>Email:</label>
         <input type="email" name="email" required v-model="email" />
 
         <label>Password:</label>
-        <input type="email" name="password" required v-model="password"/>
+        <input type="password" name="password" required v-model="password"/>
+        <div v-if="passwordError" class="error">{{ passwordError }}</div>
 
         <label>Role:</label>
         <select v-model="role">
@@ -39,6 +40,12 @@
             <input type="text" v-model="tempSkill" @keyup.alt="addSkill"/>
         </div>
 
+        <div class="submit">
+            <button>
+                Create an Account
+            </button>
+        </div>
+
     </form>
 
     <div v-for="sk in skill" :key="sk" >
@@ -56,7 +63,8 @@ export default {
             terms: false,
             names:[],
             tempSkill: '',
-            skill: []
+            skill: [],
+            passwordError: ''
         }
     },
     watch: {
@@ -77,6 +85,17 @@ export default {
         },
         deleteSkill(s) {
            this.skill = this.skill.filter((sk) => sk !== s)
+        },
+        handleSubmit() {
+            // validate password
+            this.passwordError = this.password.length > 5 ? '' : 'Password must be at least 6 chars long'
+
+            if(!this.passwordError) {
+                console.log('email:', this.email)
+                console.log('password:', this.password)
+                console.log('skills:', this.skill)
+                console.log('terms', this.terms)
+            }
         }
     }
 }
